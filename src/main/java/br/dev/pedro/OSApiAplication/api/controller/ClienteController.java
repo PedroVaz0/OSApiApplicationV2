@@ -8,6 +8,7 @@ import br.dev.pedro.OSApiAplication.domain.mode.Cliente;
 import br.dev.pedro.OSApiAplication.domain.repository.ClienteRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import org.apache.catalina.connector.Response;
@@ -51,14 +52,20 @@ public class ClienteController {
         }
     }
     
+    
+    //metodo post
+    
     @PostMapping("/clientes")
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente adicionar (@RequestBody Cliente cliente){
+    public Cliente adicionar (@Valid @RequestBody Cliente cliente){
         return clienteRepository.save(cliente);
     }
     
+    
+    //metodo put
+    
     @PutMapping("/clientes/{clienteID}")
-    public ResponseEntity<Cliente> atualizar(@PathVariable Long clienteID,
+    public ResponseEntity<Cliente> atualizar(@Valid @PathVariable Long clienteID,
                                              @RequestBody Cliente cliente) {
         
         if (!clienteRepository.existsById(clienteID)) {
