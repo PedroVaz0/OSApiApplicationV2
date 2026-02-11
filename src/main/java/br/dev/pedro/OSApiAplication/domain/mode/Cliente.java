@@ -30,7 +30,7 @@ public class Cliente {
     
     @NotBlank
     @Email
-    @Size(max = 250)
+    @Size(max = 255)
     private String email;
     
     @NotBlank
