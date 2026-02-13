@@ -4,17 +4,13 @@
  */
 package br.dev.pedro.OSApiAplication.domain.repository;
 
-import br.dev.pedro.OSApiAplication.domain.model.Cliente;
-import java.util.List;
+import br.dev.pedro.OSApiAplication.domain.model.OrdemServico;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+
 /**
  *
  * @author sesi3dib
  */
-@Repository
-public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-    List<Cliente> findByNome(String nome);
-    List<Cliente> findByNomeContaining(String nome);
-    Cliente findByEmail(String email);
+public interface OrdemServicoRepository extends JpaRepository<OrdemServico, Long> {
+    
 }
