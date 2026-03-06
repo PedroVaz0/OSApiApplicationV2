@@ -7,8 +7,11 @@ package br.dev.pedro.OSApiAplication.api.controller;
 import br.dev.pedro.OSApiAplication.domain.model.OrdemServico;
 import br.dev.pedro.OSApiAplication.domain.repository.OrdemServicoRepository;
 import br.dev.pedro.OSApiAplication.domain.service.OrdemServicoService;
+import jakarta.persistence.Id;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -49,6 +52,17 @@ public class OrdemServicoController {
     }
     
     
+    @GetMapping ("listar/{id}")
+    public ResponseEntity<OrdemServico> buscar(@PathVariable Long id) {
+        Optional<OrdemServico> ordemServico = ordemServicoRepository.findById(id);
+        if(ordemServico.isPresent()) {
+            return ResponseEntity.ok(ordemServico.get());
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    
     @PutMapping("/{ordemServicoId}")
     public ResponseEntity<OrdemServico> atualizar(@PathVariable Long ordemServicoId,
             @RequestBody OrdemServico ordemServico) {
@@ -63,20 +77,18 @@ public class OrdemServicoController {
         
         return ResponseEntity.ok(atualizada);
     }
-        
-        
-        @DeleteMapping("/clientes/{clienteID}")
-    public ResponseEntity<Void> excluir(@PathVariable Long clienteID) {
-        
-        
-        if (!clienteRepository.existsById(clienteID)) {
             
-            return ResponseEntity.notFound().build();
-        }
-        
-        
-        clienteService.excluir(clienteID);
-        return ResponseEntity.noContent().build();
     }
-    
+        @DeleteMapping("/{ordemServicoId}")
+        public ResponseEntity<Void> excluir(@PathVariable Long ordemServicoId) 
+        {
+            // Caso a ordem de serviço não exista
+            if (!ordemServicoRepository.existsById(ordemServicoId)) 
+            {
+                return ResponseEntity.notFound().build();
+            }
+            
+            ordemServicoService.excluir(ordemServicoId);
+            return ResponseEntity.noContent() .build();
+        }
 }

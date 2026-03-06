@@ -30,7 +30,8 @@ public class ClienteService {
         return clienteRepository.save(cliente);
 
     }
-
+    
+    // Excluir cliente
     public void excluir(Long clienteId) {
         clienteRepository.deleteById(clienteId);
     }

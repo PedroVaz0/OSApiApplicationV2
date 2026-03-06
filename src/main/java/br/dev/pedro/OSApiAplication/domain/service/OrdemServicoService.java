@@ -37,5 +37,10 @@ public class OrdemServicoService {
     {
         return ordemServicoRepository.save(ordemServico);
     }
+
+        
     
+        public void excluir(Long id) {
+            ordemServicoRepository.deleteById(id);
+        }
 }
