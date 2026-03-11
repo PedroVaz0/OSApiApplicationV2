@@ -63,6 +63,18 @@ public class OrdemServicoController {
     }
     
     
+    @GetMapping("/por-cliente/{clienteID}")
+    public ResponseEntity<List<OrdemServico>> listar(@PathVariable Long clienteID) {
+        List<OrdemServico> ordensDoUsuario = ordemServicoService.listarPorCliente(clienteID);
+        
+        if(ordensDoUsuario.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }else {
+            return ResponseEntity.ok(ordensDoUsuario);
+        }
+    }
+    
+    
     @PutMapping("/{ordemServicoId}")
     public ResponseEntity<OrdemServico> atualizar(@PathVariable Long ordemServicoId,
             @RequestBody OrdemServico ordemServico) {

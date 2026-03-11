@@ -14,6 +14,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.dev.pedro.OSApiAplication.domain.repository.ClienteRepository;
+import java.util.List;
 
 @Service
 public class OrdemServicoService {
@@ -42,5 +43,10 @@ public class OrdemServicoService {
     
         public void excluir(Long id) {
             ordemServicoRepository.deleteById(id);
+        }
+        
+        
+        public List<OrdemServico> listarPorCliente(Long clienteID) {
+            return ordemServicoRepository.findByClienteId(clienteID);
         }
 }

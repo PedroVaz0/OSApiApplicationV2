@@ -19,4 +19,6 @@ public interface OrdemServicoRepository extends JpaRepository<OrdemServico, Long
     List<OrdemServico> findByDataAbertura(LocalDateTime dataAbertura);
     List<OrdemServico> findByDataFinalizacao(LocalDateTime dataFinalizacao);
     List<OrdemServico> findByStatus (StatusOrdemServico status);
+    List<OrdemServico> findByClienteId (Long clienteID);
+    
  }
