@@ -4,10 +4,12 @@
  */
 package br.dev.pedro.OSApiAplication.api.controller;
 
+import br.dev.pedro.OSApiAplication.domain.dto.AtualizarStatusDTO;
 import br.dev.pedro.OSApiAplication.domain.model.OrdemServico;
 import br.dev.pedro.OSApiAplication.domain.repository.OrdemServicoRepository;
 import br.dev.pedro.OSApiAplication.domain.service.OrdemServicoService;
 import jakarta.persistence.Id;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,5 +104,20 @@ public class OrdemServicoController {
             
             ordemServicoService.excluir(ordemServicoId);
             return ResponseEntity.noContent() .build();
+        }
+        
+        @PutMapping("/atualizar-status/{oremServicoID")
+        public ResponseEntity<OrdemServico> atualizarStatus(
+        @PathVariable Long ordemServicoID,
+                @Valid @RequestBody AtualizarStatusDTO statusDTO) {
+            Optional<OrdemServico> optOS = ordemServicoService.atualizaStatus(
+            ordemServicoID,
+                    statusDTO.status());
+            
+            if(optOS.isPresent()) {
+                return ResponseEntity.ok(optOS.get());
+            } else{
+                return ResponseEntity.notFound().build();
+            }
         }
 }

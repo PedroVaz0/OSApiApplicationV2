@@ -49,4 +49,26 @@ public class OrdemServicoService {
         public List<OrdemServico> listarPorCliente(Long clienteID) {
             return ordemServicoRepository.findByClienteId(clienteID);
         }
+        
+public Optional<OrdemServico> atualizaStatus(Long ordemServicoID, StatusOrdemServico status) {
+    Optional<OrdemServico> optOrdemServico = ordemServicoRepository.findById(ordemServicoID);
+
+    if (optOrdemServico.isPresent()) {
+        OrdemServico ordemServico = optOrdemServico.get();
+
+        // Corrigido de -- para == e ajustada a lógica das chaves
+        if (ordemServico.getStatus() == StatusOrdemServico.ABERTA && status != StatusOrdemServico.ABERTA) {
+            ordemServico.setStatus(status);
+            ordemServico.setDataFinalizacao(LocalDateTime.now());
+            ordemServicoRepository.save(ordemServico);
+            return Optional.of(ordemServico);
+        } else {
+            // Caso a OS não esteja aberta ou o novo status seja inválido
+            return Optional.empty();
+        }
+    } else {
+        // Caso o ID não exista no banco
+        throw new DomainException("Nao existe OS com o id " + ordemServicoID);
+    }
 }
+ }
