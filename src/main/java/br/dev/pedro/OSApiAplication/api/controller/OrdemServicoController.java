@@ -106,7 +106,7 @@ public class OrdemServicoController {
             return ResponseEntity.noContent() .build();
         }
         
-        @PutMapping("/atualizar-status/{oremServicoID")
+        @PutMapping("/atualizar-status/{ordemServicoID}")
         public ResponseEntity<OrdemServico> atualizarStatus(
         @PathVariable Long ordemServicoID,
                 @Valid @RequestBody AtualizarStatusDTO statusDTO) {
