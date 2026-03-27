@@ -4,8 +4,10 @@
  */
 package br.dev.pedro.OSApiAplication.domain.service;
 
+import br.dev.pedro.OSApiAplication.domain.dto.ComentarioDTO;
 import br.dev.pedro.OSApiAplication.domain.exception.DomainException;
 import br.dev.pedro.OSApiAplication.domain.model.Cliente;
+import br.dev.pedro.OSApiAplication.domain.model.Comentario;
 import br.dev.pedro.OSApiAplication.domain.model.OrdemServico;
 import br.dev.pedro.OSApiAplication.domain.model.StatusOrdemServico;
 import br.dev.pedro.OSApiAplication.domain.repository.OrdemServicoRepository;
@@ -14,61 +16,73 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.dev.pedro.OSApiAplication.domain.repository.ClienteRepository;
+import br.dev.pedro.OSApiAplication.domain.repository.ComentarioRepository;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
 public class OrdemServicoService {
-    
+
     @Autowired
     private OrdemServicoRepository ordemServicoRepository;
-    
+
     @Autowired
     private ClienteRepository clienteRepository;
-    
-    
-    public OrdemServico criar(OrdemServico ordemServico) 
-    {
-       ordemServico.setStatus(StatusOrdemServico.ABERTA);
-       ordemServico.setDataAbertura(LocalDateTime.now());
-       
-       return ordemServicoRepository.save(ordemServico);
-    }
-    
-    public OrdemServico salvar(OrdemServico ordemServico) 
-    {
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
+
+    public OrdemServico criar(OrdemServico ordemServico) {
+        ordemServico.setStatus(StatusOrdemServico.ABERTA);
+        ordemServico.setDataAbertura(LocalDateTime.now());
+
         return ordemServicoRepository.save(ordemServico);
     }
 
-        
-    
-        public void excluir(Long id) {
-            ordemServicoRepository.deleteById(id);
-        }
-        
-        
-        public List<OrdemServico> listarPorCliente(Long clienteID) {
-            return ordemServicoRepository.findByClienteId(clienteID);
-        }
-        
-public Optional<OrdemServico> atualizaStatus(Long ordemServicoID, StatusOrdemServico status) {
-    Optional<OrdemServico> optOrdemServico = ordemServicoRepository.findById(ordemServicoID);
-
-    if (optOrdemServico.isPresent()) {
-        OrdemServico ordemServico = optOrdemServico.get();
-
-        // Corrigido de -- para == e ajustada a lógica das chaves
-        if (ordemServico.getStatus() == StatusOrdemServico.ABERTA && status != StatusOrdemServico.ABERTA) {
-            ordemServico.setStatus(status);
-            ordemServico.setDataFinalizacao(LocalDateTime.now());
-            ordemServicoRepository.save(ordemServico);
-            return Optional.of(ordemServico);
-        } else {
-            // Caso a OS não esteja aberta ou o novo status seja inválido
-            return Optional.empty();
-        }
-    } else {
-        // Caso o ID não exista no banco
-        throw new DomainException("Nao existe OS com o id " + ordemServicoID);
+    public OrdemServico salvar(OrdemServico ordemServico) {
+        return ordemServicoRepository.save(ordemServico);
     }
+
+    public void excluir(Long id) {
+        ordemServicoRepository.deleteById(id);
+    }
+
+    public List<OrdemServico> listarPorCliente(Long clienteID) {
+        return ordemServicoRepository.findByClienteId(clienteID);
+    }
+
+    public Optional<OrdemServico> atualizaStatus(Long ordemServicoID, StatusOrdemServico status) {
+        Optional<OrdemServico> optOrdemServico = ordemServicoRepository.findById(ordemServicoID);
+
+        if (optOrdemServico.isPresent()) {
+            OrdemServico ordemServico = optOrdemServico.get();
+
+            // Corrigido de -- para == e ajustada a lógica das chaves
+            if (ordemServico.getStatus() == StatusOrdemServico.ABERTA && status != StatusOrdemServico.ABERTA) {
+                ordemServico.setStatus(status);
+                ordemServico.setDataFinalizacao(LocalDateTime.now());
+                ordemServicoRepository.save(ordemServico);
+                return Optional.of(ordemServico);
+            } else {
+                // Caso a OS não esteja aberta ou o novo status seja inválido
+                return Optional.empty();
+            }
+        } else {
+            // Caso o ID não exista no banco
+            throw new DomainException("Nao existe OS com o id " + ordemServicoID);
+        }
+    }
+
+    public Comentario adicionarComentario(Long ordemServicoID, String descricao) {
+        OrdemServico ordemServico = ordemServicoRepository.findById(ordemServicoID)
+                .orElseThrow(() -> new DomainException("Ordem de servico não encotrada"));
+
+        Comentario comentario = new Comentario();
+        comentario.setDataEnvio(OffsetDateTime.now());
+        comentario.setDescricao(descricao);
+        comentario.setOrdemServico(ordemServico);
+
+        return comentarioRepository.save(comentario);
+    }
+
 }
- }
