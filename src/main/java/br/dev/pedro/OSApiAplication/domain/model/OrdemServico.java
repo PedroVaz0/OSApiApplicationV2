@@ -36,6 +36,8 @@ public class OrdemServico {
     @ManyToOne
     private Cliente cliente;
     
+    @Schema(name = "Lisra de comentarios registradas na ordem de servico", 
+            accessMode = Schema.AccessMode.READ_ONLY)
     @OneToMany(mappedBy = "ordemServico")
     private List<Comentario> comentarios = new ArrayList<>();
 
@@ -47,9 +49,12 @@ public class OrdemServico {
         this.comentarios = comentarios;
     }
     
-    @Schema(name = "Product ID", example = "1", required = true)
+    @Schema(name = "Descricao da ordem servico", example = "Comprar placas de video", required = true)
     private String descricao;
+    
+    @Schema(name = "preco da ordem de servico", example = "R$100.00", required = true)
     private BigDecimal preco;
+    
     
     @Enumerated(EnumType.STRING)
     private StatusOrdemServico status;
@@ -143,7 +148,9 @@ public class OrdemServico {
         return Objects.equals(this.Id, other.Id);
     }
     
-    
+    @Schema(name = "Data e hora abertura", example = "2026-04-01T18:48:09.276Z")
     private LocalDateTime dataAbertura;
+    
+        @Schema(name = "Data e hora finalizacao", example = "2026-04-01T18:48:09.273Z")
     private LocalDateTime dataFinalizacao;
 }
