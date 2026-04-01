@@ -7,6 +7,9 @@ package br.dev.pedro.OSApiAplication.api.controller;
 import br.dev.pedro.OSApiAplication.domain.model.Cliente;
 import br.dev.pedro.OSApiAplication.domain.repository.ClienteRepository;
 import br.dev.pedro.OSApiAplication.domain.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
@@ -38,11 +41,22 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    
+    @Operation(summary = "Buscar todos os clientes por id", description = "Retorna os clinetes")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Sucesso na busca"),
+    @ApiResponse(responseCode = "404", description = "Nada encontrado")
+ })
+    
     @GetMapping("/clientes")
     public List<Cliente> listas() {
         return clienteRepository.findAll();
         //return clienteRepository.findByNome("KGe");
     }
+    
+    @Operation(summary = "Buscar cliente por id", description = "Retorna o clinete com o id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Sucesso na busca"),
+    @ApiResponse(responseCode = "404", description = "Nada encontrado - O clinete nao foi encontrado")
+ })
     
     @GetMapping("/clientes/{clienteID}")
     public ResponseEntity<Cliente> buscar(@PathVariable Long clienteID) {
@@ -59,6 +73,12 @@ public class ClienteController {
     
     //metodo post
     
+    
+    @Operation(summary = "Adicionar informacao", description = "Adiciona um clinete ao banco de dados")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Sucesso"),
+    @ApiResponse(responseCode = "404", description = "Nao foi possivel adicionar o cliente")
+ })
+    
     @PostMapping("/clientes")
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente adicionar (@Valid @RequestBody Cliente cliente){
@@ -67,6 +87,11 @@ public class ClienteController {
     
     
     //metodo put
+    
+    @Operation(summary = "Substituir informacao ja existente", description = "Atualiza alguma informacao ja colocada no banco de dados")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Sucesso"),
+    @ApiResponse(responseCode = "404", description = "Nao foi possivel adicionar o cliente")
+ })
     
     @PutMapping("/clientes/{clienteID}")
     public ResponseEntity<Cliente> atualizar(@Valid @PathVariable Long clienteID,
@@ -80,6 +105,13 @@ public class ClienteController {
         cliente = clienteService.salvar(cliente);
         return ResponseEntity.ok(cliente);
     }
+    
+    
+    
+    @Operation(summary = "Deletar cliente", description = "Deleta um cliente do banco de dados ")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Sucesso na acao"),
+    @ApiResponse(responseCode = "404", description = "O clinete nao foi excluido")
+ })
     
     
     @DeleteMapping("/clientes/{clienteID}")

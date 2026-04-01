@@ -8,6 +8,9 @@ import br.dev.pedro.OSApiAplication.domain.dto.AtualizarStatusDTO;
 import br.dev.pedro.OSApiAplication.domain.model.OrdemServico;
 import br.dev.pedro.OSApiAplication.domain.repository.OrdemServicoRepository;
 import br.dev.pedro.OSApiAplication.domain.service.OrdemServicoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author sesi3dib
  */
+
 @RestController
 @RequestMapping("/ordem-servico")
 public class OrdemServicoController {
@@ -54,6 +58,11 @@ public class OrdemServicoController {
     }
     
     
+    @Operation(summary = "Get a product by id", description = "Returns a product as per the id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+    @ApiResponse(responseCode = "404", description = "Not found - The product was not found")
+ })
+    
     @GetMapping ("listar/{id}")
     public ResponseEntity<OrdemServico> buscar(@PathVariable Long id) {
         Optional<OrdemServico> ordemServico = ordemServicoRepository.findById(id);
@@ -64,6 +73,7 @@ public class OrdemServicoController {
         }
     }
     
+
     
     @GetMapping("/por-cliente/{clienteID}")
     public ResponseEntity<List<OrdemServico>> listar(@PathVariable Long clienteID) {

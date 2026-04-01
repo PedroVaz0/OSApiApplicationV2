@@ -31,6 +31,7 @@ public class ComentarioController {
     public Comentario adicionarComentario (
             @PathVariable Long ordemServicoId,
             @Valid @RequestBody ComentarioDTO comentarioDTO) {
-        return ordemServicoService.adicionarComentario(ordemServicoId, comentarioDTO.descricao());
+        return ordemServicoService.adicionarComentario(ordemServicoId,
+                comentarioDTO.descricao());
     }
  }

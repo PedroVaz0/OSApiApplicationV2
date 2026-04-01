@@ -5,6 +5,7 @@
 package br.dev.pedro.OSApiAplication.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,11 +26,13 @@ import java.util.Objects;
  */
 @Entity
 public class OrdemServico {
+    
+    @Schema(name = "Id da Ordem de servico", example = "1", required = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     
-    
+    @Schema(name = "Cliente associado a ordem servico")
     @ManyToOne
     private Cliente cliente;
     
@@ -44,6 +47,7 @@ public class OrdemServico {
         this.comentarios = comentarios;
     }
     
+    @Schema(name = "Product ID", example = "1", required = true)
     private String descricao;
     private BigDecimal preco;
     

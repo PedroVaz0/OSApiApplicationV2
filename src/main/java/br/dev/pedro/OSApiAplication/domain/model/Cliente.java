@@ -4,6 +4,7 @@
  */
 package br.dev.pedro.OSApiAplication.domain.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,20 +20,28 @@ import jakarta.validation.constraints.Size;
  */
 @Entity
 public class Cliente {
-
+    
+    
+    
+    
+    @Schema(name = "Cliente ID", example = "1", required = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
+    
+    @Schema(name = "Cliente", example = "Pedro", required = true)
     @NotBlank
     @Size(max = 60)
     private String nome;
     
+    @Schema(name = "email", example = "pedro@gmail.com", required = true)
     @NotBlank
     @Email
     @Size(max = 255)
     private String email;
     
+    @Schema(name = "telefone", example = "993482321", required = false)
     @NotBlank
     @Size(max = 20)
     @Column(name = "telefone")

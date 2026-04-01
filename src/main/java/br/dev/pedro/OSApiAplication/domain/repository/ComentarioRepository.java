@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author sesi3dib
  */
-public interface ComentarioRepository  extends JpaRepository<Comentario, Long>{
+public interface ComentarioRepository  extends JpaRepository<Comentario,
+        Long>{
     
 }
